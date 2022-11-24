@@ -23,6 +23,7 @@
         end;
         ```
         - list of some pre-defined exceptions:
+        
         |exception|oracle error|sql code|description|
         |---|---|---|---|
         |access_int_null|06530|-6530|it is raised when a null object is automatically assigned a value.|
