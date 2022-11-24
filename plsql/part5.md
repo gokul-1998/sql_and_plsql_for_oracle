@@ -23,6 +23,7 @@
         end;
         ```
         - list of some pre-defined exceptions:
+
         |exception|oracle error|sql code|description|
         |---|---|---|---|
         |access_int_null|06530|-6530|it is raised when a null object is automatically assigned a value.|
@@ -41,9 +42,9 @@
         |too_many_rows|01422|-1422|it is raised when a select into statement returns more than one row|
         |value_error|06502|-6502|arithmetic or size constraint error(eg:assigning a value to a variable that is larger than the variable size)|
         |zero_divide|01476|1476|it is raised when an attempt is made to divide a number by zero|
-        - returns the name of the employee
-        ```
-        declare
+     - returns the name of the employee
+```
+declare
 e_id employee1.emp_id%type;
 e_name employee1.emp_name%type;
 begin
@@ -51,10 +52,12 @@ select emp_name into e_name from employee1 where
 emp_id=&e_id;
 dbms_output.put_line(e_name);
 end;
+
 ```
-        - when we enter a number which is not present in table.it throws no_data_found error.Below query handles such error
-    ```
-    set serveroutput on;
+
+- when we enter a number which is not present in table.it throws no_data_found error.Below query handles such error
+```
+set serveroutput on;
 declare
 e_id employee1.emp_id%type;
 e_name employee1.emp_name%type;
@@ -66,9 +69,9 @@ exception when no_data_found then
 dbms_output.put_line('No record found');
 end;
 ```
-    - the below sql handles the other errors
-    ```
-    --set serveroutput on;
+- the below sql handles the other errors
+```
+--set serveroutput on;
 declare
 e_id employee1.emp_id%type;
 e_name employee1.emp_name%type;
@@ -99,9 +102,9 @@ exception
     statement;
 end;
 ```
-    - example
-    ```
-    declare 
+- example
+```
+declare 
 n number :=&n;
 ex_invalid exception;
 begin
@@ -114,9 +117,9 @@ exception when ex_invalid then
 dbms_output.put_line('N is greater than 5');
 end;
 ```
-    - ## user-defined exceptions
-        - pl/sql facilitates their users to own exceptions according to the need of the program.
-        - a user defined exception can be raised using either RAISE statement or the procedure DBMS_STANDARD.RAISE_APPLICATION_ERROR
+- ## user-defined exceptions
+    - pl/sql facilitates their users to own exceptions according to the need of the program.
+    - a user defined exception can be raised using either RAISE statement or the procedure DBMS_STANDARD.RAISE_APPLICATION_ERROR
     - syntax
         ```
         declare
@@ -129,8 +132,8 @@ end;
         end;
         ```
     - example
-    ```
-    set serveroutput on;
+```
+set serveroutput on;
 declare 
 e_id employee1.emp_id%type:=&e_id;
 e_name employee1.emp_name%type;
@@ -139,6 +142,7 @@ begin
 if e_id<=0 then raise
 ex_invalid;
 else 
+
 select emp_name into e_name from employee1 where emp_id=e_id;
 dbms_output.put_line(e_name);
 end if ;
@@ -180,37 +184,38 @@ end;
 - create a package
     ```
     create or replace package package_department
-as 
-procedure insert_department(dept_id in number,dept_name in varchar2);
-procedure delete_department(delete_id in number);
-function add_number(n1 in number,n2 in number)
-return number ;
-end;
-```
-    - package has been  be declared vaguely in the above query and then we are defining the body separately.
+    as
+    procedure insert_department(dept_id in number,dept_name in varchar2);
+    procedure delete_department(delete_id in number);
+    function add_number(n1 in number,n2 in number)
+    return number ;
+    end;
+    ```
+
+- package has been  be declared vaguely in the above query and then we are defining the body separately.
     ```
     create or replace package body package_department
-as
-procedure insert_department(dept_id in number,dept_name in varchar2)
-is 
-begin
-insert into department1 values(dept_id,dept_name);
-end insert_department;
-procedure delete_department(delete_id in number)
-is 
-begin
-delete from department1 where dept_id=delete_id;
-end delete_department;
-function add_number(n1 in number,n2 in number)
-return number
-is 
-n3 number;
-begin 
-n3:=n1+n2;
-return n3;
-end add_number;
-end package_department;
-```
+    as
+    procedure insert_department(dept_id in number,dept_name in varchar2)
+    is 
+    begin
+    insert into department1 values(dept_id,dept_name);
+    end insert_department;
+    procedure delete_department(delete_id in number)
+    is 
+    begin
+    delete from department1 where dept_id=delete_id;
+    end delete_department;
+    function add_number(n1 in number,n2 in number)
+    return number
+    is 
+    n3 number;
+    begin 
+    n3:=n1+n2;
+    return n3;
+    end add_number;
+    end package_department;
+    ```
 - voila we can exceute the function in package
 ```
 select * from department1;
