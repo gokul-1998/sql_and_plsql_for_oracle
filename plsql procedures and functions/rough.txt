@@ -1,0 +1,13 @@
+--select symbol,round(avg(high-low),2) as avg_volatility,dense_rank()
+--over(order by avg(high-low) asc) ranking from a1
+--group by symbol;
+
+create or replace procedure welcome12(d out number)
+as
+begin
+select * into d  from airtel;
+end welcome12;
+--set serveroutput on;
+--begin
+--welcome;
+--end;
