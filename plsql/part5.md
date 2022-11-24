@@ -23,6 +23,7 @@
         end;
         ```
         - list of some pre-defined exceptions:
+        
 
         |exception|oracle error|sql code|description|
         |---|---|---|---|
