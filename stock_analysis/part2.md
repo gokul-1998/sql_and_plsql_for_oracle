@@ -1,0 +1,2 @@
+- following the blog in oracle official
+- https://blogs.oracle.com/sql/post/calculate-stock-market-returns-using-sql
