@@ -346,7 +346,8 @@ select quote_date,
   where  (close-open)/open < -0.02
   ```
   |
-  ```select * from (
+  ```
+  select * from (
     select quote_date, 
            lead(open) over (order by quote_date) purchase_price, 
            100/lead(open) over (order by quote_date) shares, 
@@ -356,3 +357,46 @@ select quote_date,
   )
   where  day_return < -0.02;
   ```
+  
+  |old_explanation|new_explanation|
+  |---|---|
+  |The where clause is processed before analytics. So in the query above, lead() only applies to rows where there's a 2% or more fall instead of all the rows|We need the opening price on the next trading day. So we need to place the query above inside an inline view. The where clause goes outside in second view:|
+  | This means lead returns the opening price on the next day there's a big drop, not the day immediately after a fall!|we can now replace share_purchases in the full query. With this in place it's time to find our gains:|
+
+  - As before, we can now replace share_purchases in the full query. With this in place it's time to find our gains:
+
+```
+  with final_close as (
+    select close
+    from   sp_quotes
+    where quote_date = (select max(quote_date) from sp_quotes)
+  ), share_purchases as (
+    select * from (
+    select quote_date, 
+           lead(open) over (order by quote_date) purchase_price, 
+           100/lead(open) over (order by quote_date) shares, 
+           (close-open)/open day_return,
+           100 purchase
+    from   sp_quotes
+  )
+  where  day_return < -0.02
+  )
+    select round(
+                 ((( sum(shares)*max(close) )- sum(purchase) )/ sum(purchase) ) * 100, 
+                 2
+                ) pct_gain,
+           to_char(sum(shares)*max(close), 'fm$999,999.00') value,
+           sum(purchase) total_spend
+    from   share_purchases, final_close;
+```
+
+|PCT_GAIN |VALUE |                                   TOTAL_SPEND|
+|---|---|---|
+|93.26|	$21,065.28|	10900|
+
+- More than 91%! This is the best we've done so far. It works with information we have available and we have $1,100 left over :)
+- This looks like a winning strategy. It's easy to do. Potentially we could automate the whole process. There's no guarantee it'll work in the future. Based on this analysis it's tempting to try however.
+- Before you rush out to do this we need to analyze this further however. There are big problems with this approach. We'll look at these in the next post
+
+- see this later
+https://blogs.oracle.com/authors/chris-saxon
