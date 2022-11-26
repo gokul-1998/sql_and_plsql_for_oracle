@@ -1,0 +1,2 @@
+- I have used this git repo as reference
+- https://github.com/sahidul-shaikh/stock-market-analysis-with-sql
