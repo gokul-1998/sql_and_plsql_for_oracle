@@ -137,7 +137,17 @@ SELECT signal into trade_signal
 return trade_signal;
 end bajaj_signal;
 ```
+- calling the above declared function
 
+```
+set serveroutput on;
+declare
+    trade_signal bajaj2.signal%type;
+begin
+    trade_signal:=bajaj_signal('01-01-15');
+    DBMS_OUTPUT.PUT_LINE(trade_signal);
+END;
+```
 
 
 
