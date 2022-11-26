@@ -2,3 +2,4 @@
 - As you might already be aware, a lot of trading happens on the basis of technical and fundamental analysis.
 
 - One of the most basic technical analysis used by a lot of stock traders is the `Moving Average` Method. Consider the following price trend of a particular stock.
+![image](https://user-images.githubusercontent.com/82328858/204083665-965bfa2c-fe0d-4fd2-98e6-612e671ccf56.png)
