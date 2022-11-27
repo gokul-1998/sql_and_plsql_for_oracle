@@ -187,6 +187,9 @@ begin
   dbms_output.put_line(table_count);
   return table_count;
 end;
+```
+- execution
+```
 set serveroutput on;
 declare
     v_func_op number;
