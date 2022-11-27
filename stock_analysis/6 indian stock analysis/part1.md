@@ -29,6 +29,8 @@
     close number(10,2));
     ```
 - after creating the table, import the data 
+
+
 - now we are creating a new table with 20 and 50 days MA
 ```
 CREATE TABLE bajaj1 as (
@@ -275,7 +277,9 @@ BEGIN
     V_STR_VALUE := V_STR_VALUES(INDX);
      dbms_output.put_line(V_STR_VALUE);
   END LOOP;     
-END; 
+END;
+
+---------------------(OR)-------------------
 
 declare
 my_array sys.dbms_debug_vc2coll:= sys.dbms_debug_vc2coll('The', 'Quick', 'brown', 'fox');
@@ -301,3 +305,10 @@ begin
        commit;
     end;
 ``` 
+- to visualize the buy/sell condition use the join and compare
+```
+select *
+FROM bajaj2 
+right JOIN bajaj1
+USING(stk_date)
+```
