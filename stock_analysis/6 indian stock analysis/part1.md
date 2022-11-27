@@ -148,6 +148,29 @@ begin
     DBMS_OUTPUT.PUT_LINE(trade_signal);
 END;
 ```
+- pl/sql for getting all the column names using table name
+```
+set serveroutput on;
+begin
+for e in (SELECT  column_name FROM   all_tab_columns WHERE  table_name = 'MASTER_STOCKS' ORDER BY table_name) loop
+dbms_output.put_line('column name : '||e.column_name);
+end loop;
+end;
+```
+- creating a procedure for the same
 
+```
+create or replace procedure get_columns(input_table in varchar2)
+is 
+begin
+for e in (SELECT  column_name FROM   all_tab_columns WHERE  table_name = input_table ORDER BY table_name) loop
+dbms_output.put_line('column name : '||e.column_name);
+end loop;
+end get_columns;
 
+set serveroutput on;
+begin
+    get_columns('SECTION'); -- just make sure to put the table names in capital
+end;
+```
 
