@@ -174,3 +174,116 @@ begin
 end;
 ```
 
+- procedure to pass table name as a parameter and getting the count of rows dynamixally
+```
+create or replace function get_table_count (table_name IN varchar2)
+  return number
+is
+  table_count number;
+begin
+  execute immediate 'select count(*) from ' || table_name into table_count;
+  dbms_output.put_line(table_count);
+  return table_count;
+end;
+set serveroutput on;
+declare
+    v_func_op number;
+begin
+    v_func_op:=get_table_count('bajaj');
+    DBMS_OUTPUT.PUT_LINE(V_FUNC_OP);
+END;
+```
+- function to insert data
+```
+create or replace function insert_data (table_name IN varchar2)
+  return number
+is
+  table_count number;
+begin
+
+    execute immediate 'insert into stock_report values (''max_close'',2,2,2,2,2,2,2)';
+
+  return table_count;
+end insert_data;
+set serveroutput on;
+declare
+    v_func_op number;
+begin
+    v_func_op:=insert_data('bajaj');
+    DBMS_OUTPUT.PUT_LINE(V_FUNC_OP);
+END;
+```
+- function to insert data into stock table
+```
+create or replace function insert_data (table_name IN varchar2)
+  return number
+is
+    max_close number;
+min_close number;
+avg_close number(10,2);
+stddev_close number(10,2);
+golden_cross_buy number;
+death_cross_sell number;
+total_transactions number;
+  table_count number;
+  sql_stmt varchar2(1000);
+  sss varchar2(1000);
+begin
+        execute immediate 'select max(close) from '||table_name into max_close;
+        execute immediate 'select min(close) from '||table_name into min_close;
+        execute immediate 'select avg(close) from '||table_name into avg_close;
+        execute immediate 'select stddev(close) from '||table_name into stddev_close;
+        sss:='select count(signal) from '||table_name||'2 where signal=''Sell''';
+        execute immediate sss into death_cross_sell;
+        sss:='select count(signal) from '||table_name||'2 where signal=''Buy''';
+        execute immediate sss into golden_cross_buy;
+        sql_stmt := 'INSERT INTO stock_report VALUES (:1, :2, :3,:4,:5, :6, :7,:8)';
+        EXECUTE IMMEDIATE sql_stmt USING table_name, max_close, min_close,avg_close,stddev_close,golden_cross_buy,death_cross_sell,golden_cross_buy+death_cross_sell;
+
+  return table_count;
+end insert_data;
+
+```
+- calling the above declared function
+```
+set serveroutput on;
+declare
+    v_func_op number;
+
+begin
+    v_func_op:=insert_data('hero');
+
+    DBMS_OUTPUT.PUT_LINE('inserted successfully');
+END;
+```
+- execute immediate reference 
+https://docs.oracle.com/cd/B13789_01/appdev.101/b10807/13_elems017.htm
+
+- refer this for for-each loop execution with strings
+https://tech.nvasilev.com/2013/08/23/english-iterating-over-list-of-values-in-oracle-plsql/
+
+- two different ways to iterate over a list
+```
+DECLARE
+  TYPE STR_LIST_TYPE IS TABLE OF VARCHAR2(15);
+  V_STR_VALUES STR_LIST_TYPE;
+  V_STR_VALUE VARCHAR2(15);
+BEGIN
+  V_STR_VALUES := STR_LIST_TYPE('String 1','String 2','gokul');
+  FOR INDX IN V_STR_VALUES.FIRST..V_STR_VALUES.LAST
+  LOOP
+    V_STR_VALUE := V_STR_VALUES(INDX);
+     dbms_output.put_line(V_STR_VALUE);
+  END LOOP;     
+END; 
+
+declare
+my_array sys.dbms_debug_vc2coll:= sys.dbms_debug_vc2coll('The', 'Quick', 'brown', 'fox');
+begin
+  for r in my_array.first..my_array.last
+        loop
+            dbms_output.put_line( my_array(r) );
+       end loop;
+    end;
+    
+```
