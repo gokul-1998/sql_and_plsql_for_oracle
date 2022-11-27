@@ -287,3 +287,17 @@ begin
     end;
     
 ```
+- populating the stock_report by calling the function inside a loop
+```
+declare
+v_func_op number;
+my_array sys.dbms_debug_vc2coll:= sys.dbms_debug_vc2coll('hero', 'bajaj', 'eicher', 'infosys','tvs','tcs');
+begin
+  for r in my_array.first..my_array.last
+        loop
+            v_func_op:=insert_data(my_array(r));
+            dbms_output.put_line( my_array(r) );
+       end loop;
+       commit;
+    end;
+``` 
